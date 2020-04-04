@@ -308,3 +308,70 @@ public function toArray($request)
     ];
 }
 ```
+
+## Creating the task controller
+
+Let’s create the TaskController.
+
+```
+$ php artisan make:controller TaskController --api
+```
+
+Next, open it up and paste the following code into it:
+
+```
+// app/Http/Controllers/TaskController.php
+
+// add these at the top of the file
+use App\Task;
+use App\Http\Resources\TaskResource;
+
+public function index()
+{
+    return TaskResource::collection(Task);
+}
+
+public function store(Request $request)
+{
+    $task = Task::create([
+        'user_id' => auth()->user()->id,
+        'title' => $request->title,
+    ]);
+
+    return new TaskResource($task);
+}
+
+public function show(Task $task)
+{
+    return new TaskResource($task);
+}
+
+public function update(Request $request, Task $task)
+{
+    // check if currently authenticated user is the owner of the task
+    if (auth()->user()->id !== $task->user_id) {
+        return response()->json(['error' => 'You can only edit your own tasks.'], 403);
+    }
+
+    $task->update($request->only(['title']));
+
+    return new TaskResource($task);
+}
+
+public function destroy(Task $task)
+{
+    $task->delete();
+
+    return response()->json(null, 204);
+}
+```
+
+The `index()` method fetches and returns a list of the tasks that have been added. We are making use of the `TaskResource` created earlier. Because we are fetching a list of tasks, we make use of the `collection()` which is available on the resource class. This allows us to fetch a collection of resources. We could have a created an additional resource collection (e.g. `php artisan make:resource TaskCollection`) which will allow us to customize the meta data returned with the collection, but since we won’t be customizing the meta data returned we’ll just stick with the `collection()`.
+
+The `store()` method creates a new task with the `ID` of the currently authenticated user along with the details of the task, and persists it to the database. Then we return a task resource based on the newly created task.
+
+The `show()` method accepts a task model and simply returns a task resource based on the specified task.
+
+The `update()` method first checks to make sure the user trying to update a task is the owner of the task. If the user is not the owner of the task, we return an appropriate error message and set the HTTP status code to `403` (which indicates: `Forbidden` – the user is authenticated, but does not have the permissions to perform an action). Otherwise we update the task with the new details and return a task resource with the updated details.
+
+Lastly, the `destroy()` method deletes a specified task from the database. Since the specified task has been deleted and no longer available, we set the HTTP status code of the response returned to `204` (which indicates: `No content` – the action was executed successfully, but there is no content to return).
