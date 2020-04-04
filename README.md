@@ -104,3 +104,13 @@ public function user()
     return $this->belongsTo(User::class);
 }
 ```
+
+## Allowing mass assignment on some fields
+
+We’ll be using the `create()` method to save new model in a single line. To avoid getting the mass assignment error which Laravel will throw by default, we need to specify the columns we want to be mass assigned. To do this, let’s add the snippet below to our model:
+
+```
+// app/Task.php
+
+protected $fillable = ['user_id', 'title'];
+```
