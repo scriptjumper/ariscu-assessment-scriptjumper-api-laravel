@@ -80,3 +80,27 @@ Run the the command below to run the migrations:
 ```
 $ php artisan migrate
 ```
+
+## Define relationships between models
+
+A user can add as many tasks as they wish, but a task can only belong to one user. So, the relationship between the User model and Task model is a `one-to-many` relationship. Add the code below inside the User model:
+
+```
+// app/User.php
+
+public function tasks()
+{
+    return $this->hasMany(Task::class);
+}
+```
+
+Define the inverse relationship on the Task model:
+
+```
+// app/Task.php
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+```

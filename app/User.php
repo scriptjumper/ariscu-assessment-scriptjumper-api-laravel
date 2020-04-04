@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * A user can have as many tasks as possible
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
