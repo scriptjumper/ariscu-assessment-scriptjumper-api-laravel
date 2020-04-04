@@ -271,3 +271,15 @@ Next, let’s add the register and login routes. Add the code below inside `rout
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 ```
+
+## Defining API routes
+
+Let’s define our routes. Open `routes/api.php` and add the line below to it:
+
+```
+// routes/api.php
+
+Route::apiResource('tasks', 'TaskController');
+```
+
+Since we are building an API, we make use of `apiResource()` to generate API only routes.
