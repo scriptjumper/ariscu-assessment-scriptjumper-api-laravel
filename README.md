@@ -114,3 +114,80 @@ We’ll be using the `create()` method to save new model in a single line. To av
 
 protected $fillable = ['user_id', 'title'];
 ```
+
+## Adding user authentication
+
+We’ll be securing our API by adding user authentication with JWT. For this, we’ll make use of a package called jwt-auth. Let’s install and set it up:
+
+```
+$ composer require tymon/jwt-auth "1.0.*"
+```
+
+Once that’s done installing, let’s run the command below to publish the package’s config file:
+
+```
+$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+```
+
+This will create a `config/jwt.php` file that will allow us to configure the basics of the package.
+
+Next, run the command below to generate a secret key:
+
+```
+$ php artisan jwt:secret
+```
+
+This will update the `.env` file with something like `JWT_SECRET=some_random_key`. This key will be used to sign our tokens.
+
+Before we can start to use the `jwt-auth` package, we need to update our User model to implement the `Tymon\JWTAuth\Contracts\JWTSubject` contract as below:
+
+```
+// app/User.php
+
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class User extends Authenticatable implements JWTSubject
+{
+    ...
+}
+```
+
+This requires that we implement two methods: `getJWTIdentifier()` and `getJWTCustomClaims()`. Add the code below to the User model:
+
+```
+// app/User.php
+
+public function getJWTIdentifier()
+{
+    return $this->getKey();
+}
+
+public function getJWTCustomClaims()
+{
+    return [];
+}
+```
+
+The first method gets the identifier that will be stored in the subject claim of the JWT and the second method allow us to add any custom claims we want added to the JWT.
+
+Next, let’s configure the auth guard to make use of the `jwt` guard. Update `config/auth.php` as below:
+
+```
+// config/auth.php
+
+'defaults' => [
+    'guard' => 'api',
+    'passwords' => 'users',
+],
+
+...
+
+'guards' => [
+    'api' => [
+        'driver' => 'jwt',
+        'provider' => 'users',
+    ],
+],
+```
+
+Here we are telling the api guard to use the jwt driver, and we are setting the api guard as the default.
