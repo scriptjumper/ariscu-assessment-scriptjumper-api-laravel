@@ -27,3 +27,20 @@ $ php artisan serve
 // In the console you will get an out put:
 Laravel development server started: <http://127.0.0.1:8000>
 ```
+
+## Create models and migrations
+
+### Connection to PostgreSQL
+
+Before actually writing your first migration, make sure you have a database created for this app and add its credentials to the `.env` file located in the root of the project.
+
+First run `$ cp .env.example .env` to create your `.env` file and replace the database credentials below with your own.
+
+```
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=staging
+DB_USERNAME=postgres
+DB_PASSWORD=root
+```
