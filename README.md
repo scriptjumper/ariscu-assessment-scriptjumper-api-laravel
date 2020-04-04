@@ -117,7 +117,7 @@ protected $fillable = ['user_id', 'title'];
 
 ## Adding user authentication
 
-We’ll be securing our API by adding user authentication with JWT. For this, we’ll make use of a package called jwt-auth. Let’s install and set it up:
+We’ll be securing our API by adding user authentication with JWT. For this, we’ll make use of a package called `jwt-auth`. Let’s install and set it up:
 
 ```
 $ composer require tymon/jwt-auth "1.0.*"
@@ -191,3 +191,63 @@ Next, let’s configure the auth guard to make use of the `jwt` guard. Update `c
 ```
 
 Here we are telling the api guard to use the jwt driver, and we are setting the api guard as the default.
+
+Now we can start to make use of the `jwt-auth` package. Create a new `AuthController`:
+
+```
+$ php artisan make:controller AuthController
+```
+
+Then paste the code below into it:
+
+```
+// app/Http/Controllers/AuthController.php
+
+// remember to add this to the top of the file
+use App\User;
+
+public function register(Request $request)
+{
+    $user = User::create([
+        'firstName' => $request->firstName,
+        'lastName' => $request->lastName,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
+
+    $token = auth()->login($user);
+
+    return $this->respondWithToken($token);
+}
+
+public function login(Request $request)
+{
+    $credentials = $request->only(['email', 'password']);
+
+    if (!$token = auth()->attempt($credentials)) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    return $this->respondWithToken($token);
+}
+
+protected function respondWithToken($token)
+{
+    return response()->json([
+        'access_token' => $token,
+        'token_type' => 'bearer',
+        'expires_in' => auth()->factory()->getTTL() * 60000
+    ]);
+}
+```
+
+We define the methods to register a new user and to log users in respectively. Both methods returns a response with a JWT by calling a `respondWithToken()` method which gets the token array structure.
+
+Next, let’s add the register and login routes. Add the code below inside `routes/api.php`:
+
+```
+// routes/api.php
+
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+```
