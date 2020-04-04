@@ -81,7 +81,7 @@ Open the migration file generated for the User model and update the up() method 
 public function up()
 {
     Schema::create('users', function (Blueprint $table) {
-        $table->id();
+        $table->increments('id');
         $table->string('firstName');
         $table->string('lastName');
         $table->string('email')->unique();
@@ -390,3 +390,19 @@ public function __construct()
 ```
 
 We are making use of the `auth:api` middleware. Here, we are exempting the `index()` and `show()` methods from using the middleware. That way, users will be able to see a list of all tasks and a particular task without needing to be authenticated.
+
+## Handling resource not found
+
+By default when a specified model is not found, Laravel will throw a `ModelNotFoundException` and renders a `404` page. Since we are building an API, we want to handle the exception and throw an API friendly error message.
+
+Add the code below to the render) method of `app/Exceptions/Handler.php`:
+
+```
+// app/Exceptions/Handler.php
+
+if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+    return response()->json([
+    'error' => 'Resource not found'
+    ], 404);
+}
+```
