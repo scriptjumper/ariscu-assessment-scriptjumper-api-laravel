@@ -406,3 +406,75 @@ if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
     ], 404);
 }
 ```
+
+# Quick Startup
+
+## todo-list-api
+
+### Cloning Repository
+
+Use the following command to clone repository (if you have git cli):
+
+```
+$ git clone https://github.com/scriptjumper/scriptjumper-api-laravel.git
+```
+
+alternatively you can download the zipped files.
+
+### Setting up environmental variables
+
+Run the command below to create your `.env` file
+
+```
+$ cp .env.example .env
+```
+
+Add your database variables in `.env` file
+
+### Installing required packages
+
+Make sure you have compose installed, if not please visit <a href="https://getcomposer.org/download/" target="_blank">here</a> to install composer.
+
+Run the command below to install all the necessary packages:
+
+```
+$ composer install
+```
+
+### Setting up your JWT token
+
+Firstly, publish the package’s config file:
+
+```
+$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+```
+
+Next, run the command below to generate a secret key:
+
+```
+$ php artisan jwt:secret
+```
+
+### Migration
+
+To setup the tables that will be used, Run the command below:
+
+```
+$ php artisan migrate
+```
+
+### Launching Server
+
+Run the command below:
+
+```
+$ php artisan serve
+```
+
+### Routes
+
+To view all applicable routes and their methods
+
+```
+$ php artisan route:list
+```
