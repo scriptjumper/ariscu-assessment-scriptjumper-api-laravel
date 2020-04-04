@@ -20,7 +20,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(Task);
+        return TaskResource::collection(Task::with('user')->paginate(25));
     }
 
     /**
