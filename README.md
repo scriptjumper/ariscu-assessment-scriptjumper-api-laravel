@@ -44,3 +44,39 @@ DB_DATABASE=staging
 DB_USERNAME=postgres
 DB_PASSWORD=root
 ```
+
+### Creating our Task model and migration
+
+Laravel provides several commands through Artisan Laravel’s command line tool that help us by generating files and putting them in the correct folders.
+
+To create the Task model, we can run:
+
+```
+$ php artisan make:model Task -m
+```
+
+The `-m` flag will create the corresponding migration file for the model.
+
+Open the migration file generated for the Task model and update the `up()` method as below:
+
+```
+// database/migrations/TIMESTAMP_create_tasks_table.php
+
+    public function up()
+    {
+        Schema::create('tasks', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->string('title');
+            $table->timestamps();
+        });
+    }
+```
+
+We define the fields for the tasks table which are an auto increment ID, the ID of the user that added the task and the title of the title.
+
+Run the the command below to run the migrations:
+
+```
+$ php artisan migrate
+```
