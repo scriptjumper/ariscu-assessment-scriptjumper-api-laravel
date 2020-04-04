@@ -73,6 +73,26 @@ Open the migration file generated for the Task model and update the `up()` metho
     }
 ```
 
+Open the migration file generated for the User model and update the up() method as below:
+
+```
+// database/migrations/TIMESTAMP_create_users_table.php
+
+public function up()
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('firstName');
+        $table->string('lastName');
+        $table->string('email')->unique();
+        $table->timestamp('email_verified_at')->nullable();
+        $table->string('password');
+        $table->rememberToken();
+        $table->timestamps();
+    });
+}
+```
+
 We define the fields for the tasks table which are an auto increment ID, the ID of the user that added the task and the title of the title.
 
 Run the the command below to run the migrations:
