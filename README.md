@@ -375,3 +375,18 @@ The `show()` method accepts a task model and simply returns a task resource base
 The `update()` method first checks to make sure the user trying to update a task is the owner of the task. If the user is not the owner of the task, we return an appropriate error message and set the HTTP status code to `403` (which indicates: `Forbidden` – the user is authenticated, but does not have the permissions to perform an action). Otherwise we update the task with the new details and return a task resource with the updated details.
 
 Lastly, the `destroy()` method deletes a specified task from the database. Since the specified task has been deleted and no longer available, we set the HTTP status code of the response returned to `204` (which indicates: `No content` – the action was executed successfully, but there is no content to return).
+
+## Securing the API endpoints
+
+Let’s secure our API endpoints using middleware. To secure the tasks endpoint, add the code below to `app/Http/Controllers/TaskController.php`:
+
+```
+// app/Http/Controllers/TaskController.php
+
+public function __construct()
+{
+    $this->middleware('auth:api')->except(['index', 'show']);
+}
+```
+
+We are making use of the `auth:api` middleware. Here, we are exempting the `index()` and `show()` methods from using the middleware. That way, users will be able to see a list of all tasks and a particular task without needing to be authenticated.
