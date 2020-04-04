@@ -20,7 +20,19 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(Task::with('user')->paginate(25));
+        /*
+         * Adding a where clause to limit the data brought back by the user_id
+         * 
+         * Using whereHas() method to set an addition to the query
+         * Getting user_id from the auth()->user()
+         * Setting where clause to only get records that match user_id
+         */
+        $tasks = Task::with('user')->whereHas('user', function($query) {
+            $userID = auth()->user()->id;
+            $query->where('id', '=', $userID);
+        })->paginate(25);
+
+        return TaskResource::collection($tasks);
     }
 
     /**
