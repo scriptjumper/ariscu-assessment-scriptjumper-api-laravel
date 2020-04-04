@@ -283,3 +283,28 @@ Route::apiResource('tasks', 'TaskController');
 ```
 
 Since we are building an API, we make use of `apiResource()` to generate API only routes.
+
+## Creating the Task resource
+
+Before we move on to create the `TasksController`, let’s create a task resource class. We’ll make use of the artisan command make:resource to generate a new task resource class. By default, resources will be placed in the `app/Http/Resources` directory of our application.
+
+```
+$ php artisan make:resource TaskResource
+```
+
+Once that is created, let’s open it and update the `toArray()` method as below:
+
+```
+// app/Http/Resources/TaskResource.php
+
+public function toArray($request)
+{
+    return [
+        'id' => $this->id,
+        'title' => $this->title,
+        'created_at' => (string) $this->created_at,
+        'updated_at' => (string) $this->updated_at,
+        'user' => $this->user,
+    ];
+}
+```
