@@ -59,4 +59,10 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60000
         ]);
     }
+
+    //find current user
+    public function getAuthUser(Request $request)
+    {
+        return response()->json(auth()->user());
+    }
 }
