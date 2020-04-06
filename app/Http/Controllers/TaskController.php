@@ -27,7 +27,7 @@ class TaskController extends Controller
          * Getting user_id from the auth()->user()
          * Setting where clause to only get records that match user_id
          */
-        $tasks = Task::select('id', 'title', 'created_at', 'updated_at')->whereHas('user', function($query) {
+        $tasks = Task::select('id', 'title', 'created_at', 'updated_at', 'isComplete')->whereHas('user', function($query) {
             $userID = auth()->user()->id;
             $query->where('id', '=', $userID);
         })->paginate(25);
@@ -46,6 +46,7 @@ class TaskController extends Controller
         $task = Task::create([
             'user_id' => auth()->user()->id,
             'title' => $request->title,
+            'isComplete' => $request->isComplete,
         ]);
 
         return new TaskResource($task);
@@ -76,7 +77,7 @@ class TaskController extends Controller
             return response()->json(['error' => 'You can only edit your own tasks.'], 403);
         }
 
-        $task->update($request->only(['title']));
+        $task->update($request->only(['title', 'isComplete']));
 
         return new TaskResource($task);
     }
