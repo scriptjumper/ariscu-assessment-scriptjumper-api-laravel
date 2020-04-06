@@ -65,4 +65,37 @@ class AuthController extends Controller
     {
         return response()->json(auth()->user());
     }
+
+    /**
+     * Update the current user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUser(Request $request)
+    {
+        // check if currently authenticated
+        if (auth()->user()->id !== $request->id) {
+            return response()->json(['error' => 'You can only edit your own account.'], 403);
+        }
+
+        try {
+            $user = auth()->user();
+
+            $data = $this->validate($request, [
+                'id' => 'required',
+                'firstName' => 'required',
+                'lastName' => 'required',
+            ]);
+
+            $user->firstName = $data['firstName'];
+            $user->lastName = $data['lastName'];
+
+            $user->save();
+
+            return response()->json(['success' => 'User updated successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Sorry we could not update your account.'], 403);
+        }
+    }
 }
