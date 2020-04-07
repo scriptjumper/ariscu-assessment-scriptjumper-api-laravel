@@ -19,6 +19,7 @@ Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::get('user', 'AuthController@getAuthUser');
 Route::put('user/update', 'AuthController@updateUser');
+Route::post('user/avatar/new', 'AuthController@changeAvatar');
 
 // Tasks
 Route::apiResource('tasks', 'TaskController');

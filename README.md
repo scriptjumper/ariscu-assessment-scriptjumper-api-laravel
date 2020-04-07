@@ -447,6 +447,67 @@ if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
 }
 ```
 
+## Uploading Avatar Image
+
+Let’s create an endpoint for users to upload their own Avatar image.
+
+Open `AuthController.php` and paste the following code after our `updateUser()` function:
+
+```
+...
+public function changeAvatar(Request $request)
+{
+    // check if currently authenticated
+    if (auth()->user()->id !== $request->id) {
+        return response()->json(['error' => 'You can only edit your own account.'], 403);
+    }
+
+    try {
+        $user = auth()->user();
+
+        // Get the file from the request
+        $data = $this->validate($request, [
+            'avatar' => 'required',
+        ]);
+
+        // Store the contents to the database
+        $user->avatar = $data['avatar'];
+        $user->save();
+
+        return response()->json(['success' => 'Your avatar was uploaded successfully.'], 200);
+    } catch (Exception $e) {
+        return response()->json(['error' => 'Sorry we could not upload your avatar.'], 403);
+    }
+}
+```
+
+Next, open our Users migration file and paste the following code into the `up()` method:
+
+```
+public function up()
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('firstName');
+        $table->string('lastName');
+        $table->string('email')->unique();
+        $table->text('avatar')->default("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=");
+        $table->timestamp('email_verified_at')->nullable();
+        $table->string('password');
+        $table->rememberToken();
+        $table->timestamps();
+    });
+}
+```
+
+Finally, we add our route to `api.php`:
+
+```
+// routes/api.php
+
+Route::post('user/avatar/new', 'AuthController@changeAvatar');
+```
+
 # Quick Startup
 
 ## todo-list-api

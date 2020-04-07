@@ -98,4 +98,35 @@ class AuthController extends Controller
             return response()->json(['error' => 'Sorry we could not update your account.'], 403);
         }
     }
+
+    /**
+     * Changes the current users avatar.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeAvatar(Request $request)
+    {
+        // check if currently authenticated
+        if (auth()->user()->id !== $request->id) {
+            return response()->json(['error' => 'You can only edit your own account.'], 403);
+        }
+
+        try {
+            $user = auth()->user();
+
+            // Get the file from the request
+            $data = $this->validate($request, [
+                'avatar' => 'required',
+            ]);
+
+            // Store the contents to the database
+            $user->avatar = $data['avatar'];
+            $user->save();
+
+            return response()->json(['success' => 'Your avatar was uploaded successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Sorry we could not upload your avatar.'], 403);
+        }
+    }
 }
