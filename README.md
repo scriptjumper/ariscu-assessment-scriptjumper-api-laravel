@@ -1,5 +1,80 @@
 # Laravel API
 
+## Quick Startup
+
+### todo-list-api
+
+#### Cloning Repository
+
+Use the following command to clone repository (if you have git cli):
+
+```
+$ git clone https://github.com/scriptjumper/scriptjumper-api-laravel.git
+```
+
+alternatively you can download the zipped files.
+
+#### Setting up environmental variables
+
+Run the command below to create your `.env` file
+
+```
+$ cp .env.example .env
+```
+
+Add your database variables in `.env` file
+
+#### Installing required packages
+
+Make sure you have compose installed, if not please visit <a href="https://getcomposer.org/download/" target="_blank">here</a> to install composer.
+
+Run the command below to install all the necessary packages:
+
+```
+$ composer install
+```
+
+#### Setting up your JWT token
+
+Firstly, publish the package’s config file:
+
+```
+$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+```
+
+Next, run the command below to generate a secret key:
+
+```
+$ php artisan jwt:secret
+```
+
+#### Migration
+
+You have 2 options here:
+
+-   Either you can setup the database and table using the `postgreSQL-migration.sql` file provided.
+-   Or you can just run the CREATE DATABASE query from the `postgreSQL-migration.sql` file and then run
+    ```
+    $ php artisan migrate
+    ```
+    to create all the tables needed for the to-do app.
+
+#### Launching Server
+
+Run the command below:
+
+```
+$ php artisan serve
+```
+
+#### Routes
+
+To view all applicable routes and their methods
+
+```
+$ php artisan route:list
+```
+
 ## Setting Up a Laravel Web Service
 
 As with all modern PHP frameworks, we’ll need <a href="https://getcomposer.org/download/" target="_blank">Composer</a> to install and handle our dependencies. After you follow the download instructions (and add to your path environment variable), install Laravel using the command:
@@ -506,76 +581,4 @@ Finally, we add our route to `api.php`:
 // routes/api.php
 
 Route::post('user/avatar/new', 'AuthController@changeAvatar');
-```
-
-# Quick Startup
-
-## todo-list-api
-
-### Cloning Repository
-
-Use the following command to clone repository (if you have git cli):
-
-```
-$ git clone https://github.com/scriptjumper/scriptjumper-api-laravel.git
-```
-
-alternatively you can download the zipped files.
-
-### Setting up environmental variables
-
-Run the command below to create your `.env` file
-
-```
-$ cp .env.example .env
-```
-
-Add your database variables in `.env` file
-
-### Installing required packages
-
-Make sure you have compose installed, if not please visit <a href="https://getcomposer.org/download/" target="_blank">here</a> to install composer.
-
-Run the command below to install all the necessary packages:
-
-```
-$ composer install
-```
-
-### Setting up your JWT token
-
-Firstly, publish the package’s config file:
-
-```
-$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
-```
-
-Next, run the command below to generate a secret key:
-
-```
-$ php artisan jwt:secret
-```
-
-### Migration
-
-To setup the tables that will be used, Run the command below:
-
-```
-$ php artisan migrate
-```
-
-### Launching Server
-
-Run the command below:
-
-```
-$ php artisan serve
-```
-
-### Routes
-
-To view all applicable routes and their methods
-
-```
-$ php artisan route:list
 ```
