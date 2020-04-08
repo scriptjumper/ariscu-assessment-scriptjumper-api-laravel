@@ -45,7 +45,7 @@ CREATE TABLE users
 
 INSERT INTO users(
     id, "firstName", "lastName", email, avatar, email_verified_at, password, remember_token, created_at, updated_at)
-    VALUES  (1, 'Shaeen', 'Singh', 'shaeenkevinsingh@gmail.com', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mMsevenHgAHEwLd6swckQAAAABJRU5ErkJggg==', null, '$2y$10$T/uHvuPbMW.Cl6g.HhaUJOugTkt68zekKuSFLsuIYW21DrHIFCwN2', null, '2020-04-07 05:04:07', '2020-04-07 05:05:33'),
+    VALUES  (1, 'Shaeen', 'Singh', 'shaeen@gmail.com', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mMsevenHgAHEwLd6swckQAAAABJRU5ErkJggg==', null, '$2y$10$T/uHvuPbMW.Cl6g.HhaUJOugTkt68zekKuSFLsuIYW21DrHIFCwN2', null, '2020-04-07 05:04:07', '2020-04-07 05:05:33'),
             (2, 'Test', 'User', 'testuser@test.com', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mMsevenHgAHEwLd6swckQAAAABJRU5ErkJggg==', null, '$2y$10$T/uHvuPbMW.Cl6g.HhaUJOugTkt68zekKuSFLsuIYW21DrHIFCwN2', null, '2020-04-07 05:06:15', '2020-04-07 05:06:15');
 
 -- Table: tasks
