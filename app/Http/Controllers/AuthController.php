@@ -76,7 +76,7 @@ class AuthController extends Controller
     {
         // check if currently authenticated
         if (auth()->user()->id !== $request->id) {
-            return response()->json(['error' => 'You can only edit your own account.'], 403);
+            return response()->json(['message' => 'You can only edit your own account details.'], 403);
         }
 
         try {
@@ -90,12 +90,12 @@ class AuthController extends Controller
 
             $user->firstName = $data['firstName'];
             $user->lastName = $data['lastName'];
-
+            
             $user->save();
 
-            return response()->json(['success' => 'User updated successfully.'], 200);
+            return response()->json(['message' => 'User updated successfully.'], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Sorry we could not update your account.'], 403);
+            return response()->json(['message' => 'Oops update failed.'], 403);
         }
     }
 
@@ -109,7 +109,7 @@ class AuthController extends Controller
     {
         // check if currently authenticated
         if (auth()->user()->id !== $request->id) {
-            return response()->json(['error' => 'You can only edit your own account.'], 403);
+            return response()->json(['message' => 'You can only edit your own account details.'], 403);
         }
 
         try {
@@ -124,9 +124,9 @@ class AuthController extends Controller
             $user->avatar = $data['avatar'];
             $user->save();
 
-            return response()->json(['success' => 'Your avatar was uploaded successfully.'], 200);
+            return response()->json(['message' => 'Your avatar was uploaded successfully.'], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Sorry we could not upload your avatar.'], 403);
+            return response()->json(['message' => 'Oops update failed.'], 403);
         }
     }
 }
