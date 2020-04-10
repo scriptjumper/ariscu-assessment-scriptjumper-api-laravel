@@ -24,6 +24,16 @@ $ cp .env.example .env
 
 Add your database variables in `.env` file
 
+#### Setting our App key
+
+To set our app key we run the following command:
+
+```
+php artisan key:generate
+```
+
+Once that command has completed its excution it will create a environment variable `APP_KEY` in the `.env` file.
+
 #### Installing required packages
 
 Make sure you have compose installed, if not please visit <a href="https://getcomposer.org/download/" target="_blank">here</a> to install composer.
