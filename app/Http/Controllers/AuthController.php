@@ -38,7 +38,7 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unable to find your account, Please try again.'], 401);
+            return response()->json(['message' => 'Unable to find your account, Please try again.'], 401);
         }
 
         return $this->respondWithToken($token);
